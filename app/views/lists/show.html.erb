@@ -1,0 +1,30 @@
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/background.png); height: 400px; display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
+  <div class="container">
+    <h1>Find top <strong>movies</strong> to <strong>have a laugh</strong>!</h1>
+    <%= link_to "Search More Movies", lists_path, class: 'btn btn-primary mt-3' %>
+  </div>
+</div>
+<div class="container m-5">
+  <div class="d-flex flex-wrap justify-content-center"> <!-- Flexbox container -->
+    <% @list.bookmarks.each do |bookmark| %>
+      <div class="card text-center m-3" style="width: 18rem;"> <!-- Card for each item -->
+        <img src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %> Poster" class="card-img-top" style="height: 250px; object-fit: cover;">
+        <%= link_to 'Delete', bookmark_path(bookmark), class: 'btn btn-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }  %>
+        <div class="card-body">
+          <!-- Updated card name -->
+          <h5 class="card-title">Details: <%= bookmark.movie.title %></h5>
+          <p class="card-text"><strong>Comment:</strong> <%= bookmark.comment %></p>
+          <p class="card-text"><strong>Rating:</strong> <%= bookmark.movie.rating %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="container m-5">
+  <%= simple_form_for [@list, @bookmark] do |f| %>
+    <%= f.association :movie %>
+    <%= f.input :comment %>
+    <%= f.submit "Submit", class: 'btn btn-primary mt-3' %>
+    <%= link_to "Home", lists_path, class: 'btn btn-primary mt-3' %>
+  <% end %>
+</div>
